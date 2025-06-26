@@ -1,0 +1,8 @@
+Django
+djangorestframework
+djangorestframework-simplejwt   
+celery
+redis
+mysqlclient
+openpyxl
+drf-yasg
