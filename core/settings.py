@@ -12,7 +12,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = 'authentication.User'
 # Application definition
 
 INSTALLED_APPS = [
@@ -28,6 +28,9 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     'authentication',
+    'target',
+    'daily_mission',
+    'word',
 ]
 
 MIDDLEWARE = [
