@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from word.models import Word, WordCategory
+from word.models import Word
 from target.models import LearningTarget
 
 
@@ -17,7 +17,6 @@ class DailyMission(models.Model):
     ]
 
     title = models.CharField(max_length=200)
-    category = models.ForeignKey(WordCategory, on_delete=models.CASCADE)
     target = models.ForeignKey(LearningTarget, on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_CHOICES, default='pending', max_length=10)
     datetime = models.DateTimeField(auto_now_add=True)

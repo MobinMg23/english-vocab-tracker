@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-xdmis#9gfk^f+&bk-g5u_bq+phyzhv82xbb0@j+pxgrls$u1m&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '49.13.30.62']
 
 AUTH_USER_MODEL = 'authentication.User'
 # Application definition
@@ -118,7 +118,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

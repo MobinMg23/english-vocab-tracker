@@ -4,23 +4,15 @@ from authentication.models import User
 from target.models import LearningTarget
 
 
-
-class WordCategory(models.Model):
-    CATEGORY_CHOICES = [
-        ('SHORT', 'Short'),
-        ('MEDIUM', 'Medium'),
-        ('LONG', 'Long'),
-    ]
-
-    name = models.CharField(choices=CATEGORY_CHOICES, max_length=20, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Word(models.Model):
+    CATEGORY_CHOICES = [
+        ('SHORT', 'short'),
+        ('MEDIUM', 'short'),
+        ('LONG', 'long'),
+    ]
+    
     name = models.CharField(max_length=100, unique=True)
-    category = models.ForeignKey(WordCategory, on_delete=models.CASCADE)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=20, default='SHORT')
     definition = models.TextField()
     example = models.TextField(blank=True, null=True)
 
