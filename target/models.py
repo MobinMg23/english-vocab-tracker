@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from authentication.models import User
-from word.models import Word
+#from word.models import Word
 
 
 

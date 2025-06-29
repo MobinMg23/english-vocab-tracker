@@ -6,11 +6,17 @@ from target.models import LearningTarget
 
 
 class WordCategory(models.Model):
-    name = models.CharField(max_length=200, unique=True)
+    CATEGORY_CHOICES = [
+        ('SHORT', 'Short'),
+        ('MEDIUM', 'Medium'),
+        ('LONG', 'Long'),
+    ]
+
+    name = models.CharField(choices=CATEGORY_CHOICES, max_length=20, unique=True)
 
     def __str__(self):
         return self.name
-    
+
 
 class Word(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -22,28 +28,32 @@ class Word(models.Model):
         return self.name
     
 
-class WordTranslationManager(models.Manager):
-
-    def get_translations(self, word, language):
+class TranslationManager(models.Manager):
+    
+    def get_word_translation(self, word, language):
         return self.filter(word=word, language=language).values_list('translation', flat=True)
+    
+    def get_example_translation(self, word, language):
+        return self.filter(word=word, language=language).values_list('example', flat=True).first()
 
-class WordTranslation(models.Model):
+class Translation(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    word_translation = models.CharField(max_length=200)
     LANG_CHOICES = [
     ('en', 'English'),
     ('fa', 'Persian'),
     ('es', 'Spanish'),
     ]
+    example_translation = models.TextField(blank=True, null=True)
     language = models.CharField(choices=LANG_CHOICES, default='fa', max_length=20)
-    translation = models.CharField(max_length=200)
-    objects = WordTranslationManager()
+    objects = TranslationManager()
 
     def __str__(self):
-        return f"{self.word.name} ({self.language}): {self.translation}"
+        return f"{self.word_translation.name} ({self.language}): {self.word_translation}"
     
     class Meta:
         unique_together = ('word', 'language')
-    
+
 
 class LearnedWord(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -56,6 +66,3 @@ class LearnedWord(models.Model):
     
     class Meta:
         unique_together = ('user', 'word')
-
-
-
