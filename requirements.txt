@@ -6,3 +6,4 @@ redis
 openpyxl
 drf-yasg
 requests
+deep-translator
