@@ -19,14 +19,17 @@ class Word(models.Model):
     def __str__(self):
         return self.name
     
+    def get_category(self):
+        return self.category
 
+    
 class TranslationManager(models.Manager):
     
     def get_word_translation(self, word, language):
-        return self.filter(word=word, language=language).values_list('translation', flat=True)
+        return self.filter(word=word, language=language).values_list('word_translation', flat=True)
     
     def get_example_translation(self, word, language):
-        return self.filter(word=word, language=language).values_list('example', flat=True).first()
+        return self.filter(word=word, language=language).values_list('example_translation', flat=True).first()
 
 class Translation(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
@@ -41,7 +44,7 @@ class Translation(models.Model):
     objects = TranslationManager()
 
     def __str__(self):
-        return f"{self.word_translation.name} ({self.language}): {self.word_translation}"
+        return f"{self.word_translation} ({self.language})"
     
     class Meta:
         unique_together = ('word', 'language')
@@ -54,7 +57,7 @@ class LearnedWord(models.Model):
     learned_date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.word.word} - {self.user.username}"
+        return f"{self.word.name} - {self.user.username}"
     
     class Meta:
         unique_together = ('user', 'word')
