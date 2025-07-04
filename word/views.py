@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.response import Response
@@ -14,7 +15,7 @@ from celery_tasks.word_tasks.word_translate_task import word_translate_task
 
 
 class WordSaveAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser,]
 
     def post(self, request):
         file = request.FILES.get('file')
@@ -36,7 +37,7 @@ class WordSaveAPIView(APIView):
     
 
 class WordListAPIView(generics.ListAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny,]
     serializer_class = WordSerializer
 
     def get_queryset(self):
@@ -51,7 +52,7 @@ class WordDetailAPIView(APIView):
         try:
             return Word.objects.get(name=word)
         except Word.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise Http404
 
     def get(self, request, word):
         word = self.get_object(word=word)

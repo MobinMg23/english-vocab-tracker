@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-xdmis#9gfk^f+&bk-g5u_bq+phyzhv82xbb0@j+pxgrls$u1m&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '49.13.30.62']
+ALLOWED_HOSTS = ['49.13.30.62', '*']
 
 AUTH_USER_MODEL = 'authentication.User'
 # Application definition
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'target',
     'daily_mission',
     'word',
+    'celery_tasks'
 ]
 
 MIDDLEWARE = [
