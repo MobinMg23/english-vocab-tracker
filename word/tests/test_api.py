@@ -5,7 +5,8 @@ from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.urls import reverse 
 from django.http import Http404
-from word.models import Word
+from word.models import Word, Translation
+from word.views import WordTranslateAPIView
 
 
 User = get_user_model()
@@ -31,7 +32,7 @@ class WordSaveAPIViewTests(APITestCase):
         response = self.client.post(self.url,
             {
                 'file': file,
-                'category': 'short'
+                'category': 'SHORT'
             }, format='multipart'
         )
 
@@ -40,9 +41,9 @@ class WordSaveAPIViewTests(APITestCase):
 
         self.assertEqual(mock_apply_async.call_count, 3)
         called_args = [call.kwargs['args'] for call in mock_apply_async.call_args_list]
-        self.assertIn(['short', 'hello'], called_args)
-        self.assertIn(['short', 'god'], called_args)
-        self.assertIn(['short', 'world'], called_args)
+        self.assertIn(['SHORT', 'hello'], called_args)
+        self.assertIn(['SHORT', 'god'], called_args)
+        self.assertIn(['SHORT', 'world'], called_args)
 
     @patch('word.views.word_save_task.apply_async')
     def test_post_withoput_file(self, mock_apply_async):
@@ -104,4 +105,87 @@ class WordDetailAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
         
+class WordTranslateAPIViewTests(APITestCase):
+    def setUp(self):
+        self.word1 = Word.objects.create(name='hello', definition='A greeting', category='SHORT')
+
+        self.translation1 = Translation.objects.create(
+            word=self.word1,
+            word_translation='سلام',
+            example_translation='سلام به شما',
+            language='fa'
+        )
+
+        self.user = User.objects.create(username='mobin', is_staff=True)
+        self.user.set_password('1122Mn')
+        self.user.save()
+
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
+        self.url = reverse('word-translate', kwargs={'language': 'fa'})
+    
+    def test_get_queryset(self):
+        view = WordTranslateAPIView()
+        view.kwargs = {'language': 'fa'}
+        queryset = view.get_queryset()
+
+        self.assertNotIn(self.word1, queryset)    
+
+    @patch('word.views.word_translate_task.apply_async')
+    def test_word_translate(self, mock_apply_async):
+        self.url = reverse('word-translate', kwargs={'language': 'es'})
+        response = self.client.post(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(mock_apply_async.call_count, 1)
+        called_args = [call.kwargs['args'] for call in mock_apply_async.call_args_list]
+        self.assertIn([self.word1.id, 'es'], called_args)
+
+    @patch('word.views.word_translate_task.apply_async')
+    def test_not_found_word_translate(self, mock_apply_async):
+
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
+        mock_apply_async.assert_not_called()
+
+
+class WordTranslateDetailAPIViewTests(APITestCase):
+    def setUp(self):
+        self.word1 = Word.objects.create(name='hello', definition='A greeting', category='SHORT')
+
+        self.translation1 = Translation.objects.create(
+            word=self.word1,
+            word_translation='سلام',
+            example_translation='سلام به شما',
+            language='fa'
+        )
+
+        self.user = User.objects.create(username='mobin')
+        self.user.set_password('1122Mn')
+        self.user.save()
+
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
+        self.url = reverse('word-translate-detail', kwargs={
+            'language': 'fa',
+            'word': 'hello'
+        })
+
+    def test_get_translate_detail(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(self.translation1.word_translation, response.data['word_translation'])
+
+    def test_not_found_translate_detail(self):
+        self.url = reverse('word-translate-detail', kwargs={
+            'language': 'es',
+            'word': 'hello'
+        })
+
+        response = self.client.get(self.url)
+        
+        self.assertFalse(Translation.objects.filter(word__name='hello', language='es').exists())
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
