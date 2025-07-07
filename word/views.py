@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from target.permissions import IsOwner
 from word.models import Word, Translation, LearnedWord
-from word.serializers import WordSerializer, TranslationSerializer
+from word.serializers import WordSerializer, TranslationSerializer, LearnedWordSerializer
 
 from celery_tasks.word_tasks.word_save_task import word_save_task
 from celery_tasks.word_tasks.word_translate_task import word_translate_task
@@ -37,22 +37,16 @@ class WordSaveAPIView(APIView):
 class WordListAPIView(generics.ListAPIView):
     permission_classes = [AllowAny,]
     serializer_class = WordSerializer
-
-    def get_queryset(self):
-        return Word.objects.all()  
+    queryset = Word.objects.all()
 
 
 class WordDetailAPIView(APIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = WordSerializer
 
-    def get_object(self, word):
-        return get_object_or_404(Word, name=word)
-
     def get(self, request, word):
-        word = self.get_object(word=word)
+        word = get_object_or_404(Word, name=word)
         serializer = self.serializer_class(word)
-
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
@@ -85,4 +79,11 @@ class WordTranslateDetailAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 
+class LearnedWordListAPIView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = LearnedWordSerializer
     
+    def get(self, request):
+        learned_words = LearnedWord.objects.filter(user=request.user).select_related('word')
+        serializer = self.serializer_class(learned_words, many=True)
+        return Response(serializer.data, status.HTTP_200_OK)

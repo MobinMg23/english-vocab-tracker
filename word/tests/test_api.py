@@ -5,8 +5,9 @@ from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.urls import reverse 
 from django.http import Http404
-from word.models import Word, Translation
+from word.models import Word, Translation, LearnedWord
 from word.views import WordTranslateAPIView
+from target.models import LearningTarget
 
 
 User = get_user_model()
@@ -188,4 +189,28 @@ class WordTranslateDetailAPIViewTests(APITestCase):
         
         self.assertFalse(Translation.objects.filter(word__name='hello', language='es').exists())
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class LearnedWordListTests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create(username='mobin')
+        self.user.set_password('mobin1133')
+        self.user.save()
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        self.url = reverse('leaned-word-list')
+
+        self.word1 = Word.objects.create(name='hello', definition='A greeting', category='SHORT')
+        self.target1 = LearningTarget.objects.create(user=self.user, title='never give up', daily_goal=2)
+        self.learned_word = LearnedWord.objects.create(user=self.user, target=self.target1, word=self.word1)
+
+    def test_get_list(self):
+        response = self.client.get(self.url)
+        print(response.data)
+        word_ids = [learned['id'] for learned in response.data]
+        word_names = [learned['word_name'] for learned in response.data]
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(self.word1.id, word_ids)
+        self.assertIn(self.word1.name, word_names)
         
