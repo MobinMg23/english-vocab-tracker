@@ -81,9 +81,7 @@ class WordTranslateDetailAPIView(APIView):
 
 class LearnedWordListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated,]
-    serializer_class = LearnedWordSerializer
-    
-    def get(self, request):
-        learned_words = LearnedWord.objects.filter(user=request.user).select_related('word')
-        serializer = self.serializer_class(learned_words, many=True)
-        return Response(serializer.data, status.HTTP_200_OK)
+    serializer_class = LearnedWordSerializer   
+
+    def get_queryset(self):
+        return LearnedWord.objects.filter(user=self.request.user).select_related('word')
