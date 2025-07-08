@@ -6,8 +6,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from target.permissions import IsOwner
 
-from target.models import LearningTarget, DailyMission
-from target.serializers import LearningTargetSerializer, DailyMissionSerializer
+from target.models import LearningTarget
+from target.serializers import LearningTargetSerializer
 
     
 

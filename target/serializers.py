@@ -8,8 +8,8 @@ class LearningTargetSerializer(serializers.ModelSerializer):
         model = LearningTarget
         fields = ['title', 'description', 'daily_goal', 'start_date', 'end_date']
         
-        def create(self, validated_data):
-            user = self.context['request'].user
-           
-            return LearningTarget.objects.create(user=user, **validated_data)
+    def create(self, validated_data):
+        user = self.context['request'].user
+       
+        return LearningTarget.objects.create(user=user, **validated_data)
         

@@ -23,3 +23,4 @@ class LearningTargetTests(TestCase):
         self.assertEqual(self.target1.user.username, 'mobin23')
         self.assertEqual(self.target1.daily_goal, 2)
         self.assertNotEqual(self.target1.title, 'NO')
+        self.assertEqual(str(self.target1), f"{self.target1.title} - {self.user.username}")

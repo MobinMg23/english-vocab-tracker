@@ -206,7 +206,6 @@ class LearnedWordListTests(APITestCase):
 
     def test_get_list(self):
         response = self.client.get(self.url)
-        print(response.data)
         word_ids = [learned['id'] for learned in response.data]
         word_names = [learned['word_name'] for learned in response.data]
 
