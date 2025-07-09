@@ -7,3 +7,5 @@ openpyxl
 drf-yasg
 requests
 deep-translator
+psycopg2-binary
+
