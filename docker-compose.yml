@@ -103,7 +103,7 @@ services:
       - static_volume:/app/static
       - media_volume:/app/media
     ports:
-      - "8002:8002"
+      - "8008:8008"
     depends_on:
       db:
         condition: service_healthy
