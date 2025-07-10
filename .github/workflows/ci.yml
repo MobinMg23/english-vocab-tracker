@@ -31,17 +31,17 @@ jobs:
           echo "CELERY_RESULT_BACKEND=redis://redis:6379/0" >> .env
 
       - name: Build & Run Containers
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
 
       - name: Wait for db
         run: sleep 10
       
       - name: Run tests
-        run: docker-compose run web coverage run --source='word/tests/,target/tests/,daily_mission, celery_tasks' manage.py test
+        run: docker compose run web coverage run --source='word/tests/,target/tests/,daily_mission, celery_tasks' manage.py test
       
       - name: Generate coverage report
-        run: docker-compose run web coverage report -m
+        run: docker compose run web coverage report -m
 
       - name: Stop Containers
-        run: docker-compose down
+        run: docker compose down
       
