@@ -37,7 +37,7 @@ jobs:
         run: sleep 10
       
       - name: Run tests
-        run: docker compose run web coverage run --source='word/tests/,target/tests/,daily_mission, celery_tasks' manage.py test
+        run: docker compose run web coverage run --source='word/tests/,target/tests/,daily_mission,celery_tasks' manage.py test
       
       - name: Generate coverage report
         run: docker compose run web coverage report -m
