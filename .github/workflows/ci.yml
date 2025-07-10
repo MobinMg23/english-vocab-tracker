@@ -1,0 +1,47 @@
+name: Run Project Test And Push
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Chekout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set Up .env
+        run: |
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          echo "POSTGRES_HOST=db" >> .env
+          echo "POSTGRES_PORT=5432" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "DEBUG=0" >> .env
+          echo "CELERY_BROKER_URL=redis://redis:6379/0" >> .env
+          echo "CELERY_RESULT_BACKEND=redis://redis:6379/0" >> .env
+
+      - name: Build & Run Containers
+        run: docker-compose up -d --build
+
+      - name: Wait for db
+        run: sleep 10
+      
+      - name: Run tests
+        run: docker-compose run web coverage run --source='word/tests/,target/tests/,daily_mission, celery_tasks' manage.py test
+      
+      - name: Generate coverage report
+        run: docker-compose run web coverage report -m
+
+      - name: Stop Containers
+        run: docker-compose down
+      
