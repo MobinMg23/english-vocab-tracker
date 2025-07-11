@@ -22,7 +22,10 @@ jobs:
       - name: Run remote commands
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
-            cd /home/mobinuser/english_learning &&
+            cd /home/mobinuser/english-vocab-tracker &&
             git pull origin main &&
             docker compose restart
           "
+
+
+      
