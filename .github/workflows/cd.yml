@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Debug SSH key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
 
       - name: Start SSH agent
         uses: webfactory/ssh-agent@v0.7.0
@@ -28,4 +31,3 @@ jobs:
             git pull origin main &&
             docker compose restart
           "
-          
