@@ -10,15 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Chekout code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Start SSH agent
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}"
+
+      - name: Debug SSH key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
 
       - name: Run remote commands
         run: |
@@ -27,4 +28,4 @@ jobs:
             git pull origin main &&
             docker compose restart
           "
-
+          
