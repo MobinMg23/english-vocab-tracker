@@ -18,56 +18,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
-          key: -----BEGIN OPENSSH PRIVATE KEY-----
-            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
-            -----END OPENSSH PRIVATE KEY-----
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
 
           script: |
             cd /home/mobinuser/english_learning
