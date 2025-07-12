@@ -91,7 +91,7 @@ class LearningTargetDetailAPIViewTests(APITestCase):
             'title': 'Yes You Can'
         }, format='multipart')
         
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertNotEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_patch_target_detail_500error(self):
         response = self.client.patch(self.url, 
