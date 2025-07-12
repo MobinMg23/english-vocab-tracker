@@ -37,6 +37,47 @@ class LearningTargetAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn(self.target1, LearningTarget.objects.all())
         self.assertEqual(response.data['title'], 'OK')
+    
+    def test_post_not_create_target(self):
+        response = self.client.post(self.url, 
+            {
+                'title': 'OK',
+                'description': 'Hola',
+                'daily_goal': 'i0'
+            }
+        )
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class LearningTargetListAPIViewTests(APITestCase):
+    def setUp(self):
+        self.user = self.user = User.objects.create(username='mobin23')
+        self.user.set_password('okokok23')
+        self.user.save()
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        self.url = reverse('target-list')
+
+        self.target1 = LearningTarget.objects.create(
+            user=self.user,
+            title='OK',
+            description='Hola',
+            daily_goal=2 
+        )
+        self.target2 = LearningTarget.objects.create(
+            user=self.user,
+            title='No',
+            description='Halo',
+            daily_goal=3
+        )
+
+    def test_get_user_target_list(self):
+        response = self.client.get(self.url)
+
+        target_list = [target for target in response.data['id']]
+        self.assertIn([self.target1.id, self.target2], target_list)
 
 
 class LearningTargetDetailAPIViewTests(APITestCase):
@@ -100,3 +141,8 @@ class LearningTargetDetailAPIViewTests(APITestCase):
         }, format='multipart')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_delete_target(self):
+        response = self.client.delete(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
