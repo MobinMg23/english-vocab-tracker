@@ -13,6 +13,8 @@ class IsOwnerPermissionTests(APITestCase):
 
         self.owner_user = User.objects.create(username='owner', password='okokok')
         self.other_user = User.objects.create(username='vini', password='jr')
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.owner_user)
 
         self.target = LearningTarget.objects.create(
             user=self.owner_user,
@@ -23,15 +25,12 @@ class IsOwnerPermissionTests(APITestCase):
         self.url = reverse("target-detail", kwargs={'pk': self.target.id})
 
     def test_owner_can_access(self):
-        self.client.login(username='owner', password='okokok')
-
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_not_owner(self):
-        self.client.login(username='vini', password='jr')
-
+        self.client.force_login(user=self.other_user)
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
