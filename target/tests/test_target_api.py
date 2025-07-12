@@ -76,8 +76,9 @@ class LearningTargetListAPIViewTests(APITestCase):
     def test_get_user_target_list(self):
         response = self.client.get(self.url)
 
-        target_list = [target for target in response.data['id']]
-        self.assertIn([self.target1.id, self.target2], target_list)
+        target_ids = [target['id'] for target in response.data]
+        self.assertIn(self.target1.id, target_ids)
+        self.assertIn(self.target2.id, target_ids)
 
 
 class LearningTargetDetailAPIViewTests(APITestCase):
