@@ -33,7 +33,7 @@ class LearningTargetListAPIView(generics.ListAPIView):
     
 
 class LearningTargetDetailAPIView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated, IsOwner,]
+    permission_classes = [IsAuthenticated,]
     serializer_class = LearningTargetSerializer
     
     def get(self, request, pk):
