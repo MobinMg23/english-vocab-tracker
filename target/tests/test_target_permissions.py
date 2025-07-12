@@ -11,8 +11,8 @@ User = get_user_model()
 class IsOwnerPermissionTests(APITestCase):
     def setUp(self):
 
-        self.owner_user = User.objects.create(username='owner', password='okokok')
-        self.other_user = User.objects.create(username='vini', password='jr')
+        self.owner_user = User.objects.create_user(username='owner', password='okokok')
+        self.other_user = User.objects.create_user(username='vini', password='jr')
         self.client = APIClient()
 
         self.target = LearningTarget.objects.create(
