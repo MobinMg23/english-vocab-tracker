@@ -61,7 +61,7 @@ class LearningTargetDetailAPIViewTests(APITestCase):
             daily_goal=3
         )
 
-        self.url = reverse('target-create', kwargs={"id": self.target1.id})
+        self.url = reverse('target-detail', kwargs={"id": self.target1.id})
 
     def test_get_target_detail(self):
         response = self.client.get(self.url)
