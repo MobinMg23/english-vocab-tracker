@@ -4,5 +4,5 @@ from target.views import LearningTargetAPIView, LearningTargetListAPIView, Learn
 urlpatterns = [
     path('create/', LearningTargetAPIView.as_view(), name='target-create'),
     path('list/', LearningTargetListAPIView.as_view(), name='target-list'),
-    path('detail/<int:id>/', LearningTargetDetailAPIView.as_view(), name='target-detail'),
+    path('detail/<int:pk>/', LearningTargetDetailAPIView.as_view(), name='target-detail'),
 ]
