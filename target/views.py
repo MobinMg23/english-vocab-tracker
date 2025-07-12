@@ -12,7 +12,7 @@ from target.serializers import LearningTargetSerializer
     
 
 class LearningTargetAPIView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = LearningTargetSerializer
 
     def post(self, request):
@@ -25,7 +25,7 @@ class LearningTargetAPIView(generics.GenericAPIView):
     
 
 class LearningTargetListAPIView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = LearningTargetSerializer
 
     def get_queryset(self):
@@ -33,17 +33,17 @@ class LearningTargetListAPIView(generics.ListAPIView):
     
 
 class LearningTargetDetailAPIView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = LearningTargetSerializer
     
     def get(self, request, pk):
-        target = get_object_or_404(LearningTarget, pk=pk, user=request.user)
+        target = get_object_or_404(LearningTarget, pk=pk)
         serializer = self.serializer_class(target)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def patch(self, request, pk):
-        target = get_object_or_404(LearningTarget, pk=pk, user=request.user)
+        target = get_object_or_404(LearningTarget, pk=pk)
         serializer = self.serializer_class(instance=target, data=request.data, partial=True)
 
         if serializer.is_valid():
@@ -53,7 +53,7 @@ class LearningTargetDetailAPIView(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
-        target = get_object_or_404(LearningTarget, pk=pk, user=request.user)
+        target = get_object_or_404(LearningTarget, pk=pk)
         target.delete()
         
         return Response({"message": "Learning target deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
