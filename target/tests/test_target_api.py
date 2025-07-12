@@ -61,7 +61,7 @@ class LearningTargetDetailAPIViewTests(APITestCase):
             daily_goal=3
         )
 
-        self.url = reverse('target-detail', kwargs={"id": self.target1.id})
+        self.url = reverse('target-detail', kwargs={"pk": self.target1.id})
 
     def test_get_target_detail(self):
         response = self.client.get(self.url)
@@ -70,7 +70,7 @@ class LearningTargetDetailAPIViewTests(APITestCase):
         self.assertEqual(self.target1.title, response.data['title'])
 
     def test_get_target_detail_404error(self):
-        self.url = reverse('target-detail', kwargs={'id': 10})
+        self.url = reverse('target-detail', kwargs={'pk': 10})
         response = self.client.get(self.url)
         
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -85,7 +85,7 @@ class LearningTargetDetailAPIViewTests(APITestCase):
         self.assertEqual(self.target1.title, response.data['title'])
     
     def test_patch_target_detail_404error(self):
-        self.url = reverse('target-detail', kwargs={'id': 10})
+        self.url = reverse('target-detail', kwargs={'pk': 10})
         response = self.client.patch(self.url, 
         {
             'title': 'Yes You Can'
