@@ -16,8 +16,8 @@ class DailyMission(models.Model):
         ('failed', 'Failed'),
     ]
 
-    title = models.CharField(max_length=200)
-    target = models.ForeignKey(LearningTarget, on_delete=models.CASCADE)
+    title = models.CharField(max_length=20, blank=True, null=True)
+    target = models.ForeignKey(LearningTarget, on_delete=models.CASCADE, related_name='daily_mission_targets')
     status = models.CharField(choices=STATUS_CHOICES, default='pending', max_length=10)
     datetime = models.DateTimeField(auto_now_add=True)
 
@@ -26,11 +26,11 @@ class DailyMission(models.Model):
         
 
 class DailyMissionWord(models.Model):
-    daily_mission = models.ForeignKey(DailyMission, on_delete=models.CASCADE)
+    daily_mission = models.ForeignKey(DailyMission, on_delete=models.CASCADE, related_name='daily_words')
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.daily_mission.title} - {self.word.word}"
+        return f"{self.daily_mission.title} - {self.word.name}"
     
     class Meta:
         unique_together = ('daily_mission', 'word')

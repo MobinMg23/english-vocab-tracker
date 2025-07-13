@@ -10,3 +10,4 @@ deep-translator
 psycopg2-binary
 gunicorn
 coverage
+django-celery-beat
