@@ -50,10 +50,8 @@ services:
       - .:/app
     command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     depends_on:
-      redis:
-        condition: service_healthy
-      db:
-        condition: service_healthy
+      web:
+        condition: service_started
     networks:
       backend:
         aliases:

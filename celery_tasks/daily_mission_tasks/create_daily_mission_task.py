@@ -1,11 +1,11 @@
 from celery import shared_task
 from django.utils import timezone
-from random import choices, randint
+from random import randint, sample
 import logging
 from daily_mission.models import DailyMission, DailyMissionWord
 from target.models import LearningTarget
 from word.models import LearnedWord, Word
-from celery_tasks.daily_mission_tasks.send_email_task import send_daily_email
+from celery_tasks.daily_mission_tasks.send_daily_mission_email_task import send_daily_mission_email
 
 
 logger = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ def create_daily_mission(self):
                 logger.warning(f"Not enough words for user: {target.user.username}")
                 continue
 
-            selected_words = choices(available_words_list, k=daily_goal)
+            selected_words = sample(available_words_list, daily_goal)
 
             for word in selected_words:
                 DailyMissionWord.objects.create(daily_mission=mission, word=word)
@@ -53,7 +53,7 @@ def create_daily_mission(self):
 
             #Send Daily Mission Email
             if target.user.email:
-                send_daily_email.apply_async(kwargs={'user_id': target.user.id}, countdown=delay_time)
+                send_daily_mission_email.apply_async(kwargs={'user_id': target.user.id}, countdown=delay_time)
                 logger.info(f'Send Email for User: {target.user.username} -- Email: {target.user.email}')
                 delay_time += randint(1, 5) 
             else:
