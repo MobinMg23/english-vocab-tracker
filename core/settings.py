@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'target',
     'daily_mission',
     'word',
-    'celery_tasks'
+    'celery_tasks',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,8 @@ CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", default="")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", default="")
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 
 # Password validation

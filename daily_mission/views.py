@@ -5,11 +5,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from target.permissions import IsOwner
-
 from daily_mission.models import DailyMission
 from daily_mission.serializers import DailyMissionSerializer
 from target.models import LearningTarget
-from target.serializers import LearningTargetSerializer
+
 
 
 
@@ -17,8 +16,7 @@ class CreateDailyMissionAPIView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated,]
     serializer_class = DailyMissionSerializer
 
-    def get(self, request):
-        pass
+    
 
 
 class DailyMissionListAPIView(generics.GenericAPIView):

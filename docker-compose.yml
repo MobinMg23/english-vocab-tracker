@@ -40,6 +40,26 @@ services:
         aliases:
           - redis
 
+  celery_beat:
+    build: .
+    container_name: celery_beat
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    networks:
+      backend:
+        aliases:
+          - celery
+
+
   celery_word_app:
     build: .
     container_name: celery_word_app
