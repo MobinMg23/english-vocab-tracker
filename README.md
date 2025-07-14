@@ -83,7 +83,7 @@ This project is ready for production deployment using Docker. You may deploy it 
 ----------------------------
 👤 Author
 ----------------------------
-Mobin Goodarziyan – mobin.1383.goodarziyan@gmail.com
+Mobin Goodarziyan – mobin.1383.goodarziyan.com
 
 ----------------------------
 📃 License
