@@ -11,9 +11,8 @@ def default_end_date():
     return timezone.now().date() + timedelta(days=30)
 
 
-
 class LearningTarget(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='targets')
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     daily_goal = models.PositiveIntegerField(default=1)
