@@ -29,7 +29,7 @@ class DailyMissionTests(TestCase):
     def test_daily_mission_creation(self):
         self.assertEqual(self.mission1.target.daily_goal, self.target1.daily_goal)
         self.assertEqual(self.mission1.title, 'okokok')
-        self.assertEqual(str(self.target1), f"{self.mission1.title} - {self.mission1.target.title} ({self.mission1.status})")
+        self.assertEqual(str(self.mission1), f"{self.mission1.title} - {self.mission1.target.title} ({self.mission1.status})")
 
 
 class DailyMissionWordTests(TestCase):
