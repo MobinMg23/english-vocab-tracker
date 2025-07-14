@@ -28,17 +28,17 @@ A comprehensive Django-based web application to help users track and improve the
 📁 Project Structure
 ----------------------------
 english-vocab-tracker/
-├── authentication/       # User auth logic and APIs
-├── celery_tasks/         # Celery tasks for async/background work
-├── core/                 # Django settings and main config
-├── daily_mission/        # Generate and manage daily word tasks
-├── monitoring/           # Logs and user progress tracking
-├── target/               # Personal goal setting and tracking
-├── word/                 # Main vocabulary CRUD logic
-├── .github/workflows/    # CI/CD pipelines
-├── docker-compose.yml    # Docker multi-service setup
-├── requirements.txt      # Python dependencies
-└── manage.py             # Django management script
+├── authentication/        # User auth logic and APIs
+├── celery_tasks/          # Celery tasks for async/background work
+├── core/                  # Django settings and main config
+├── daily_mission/         # Generate and manage daily word tasks
+├── monitoring/            # Logs and user progress tracking
+├── target/                # Personal goal setting and tracking
+├── word/                  # Main vocabulary CRUD logic
+├── .github/workflows/     # CI/CD pipelines
+├── docker-compose.yml     # Docker multi-service setup
+├── requirements.txt       # Python dependencies
+└── manage.py              # Django management script
 
 ----------------------------
 🧪 Getting Started
