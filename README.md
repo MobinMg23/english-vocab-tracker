@@ -23,23 +23,6 @@ A comprehensive Django-based web application to help users track and improve the
 - Database: PostgreSQL
 - Containerization: Docker, Docker Compose
 - DevOps: GitHub Actions (CI/CD)
-
-----------------------------
-📁 Project Structure
-----------------------------
-english-vocab-tracker/
-├── authentication/        # User auth logic and APIs
-├── celery_tasks/          # Celery tasks for async/background work
-├── core/                  # Django settings and main config
-├── daily_mission/         # Generate and manage daily word tasks
-├── monitoring/            # Logs and user progress tracking
-├── target/                # Personal goal setting and tracking
-├── word/                  # Main vocabulary CRUD logic
-├── .github/workflows/     # CI/CD pipelines
-├── docker-compose.yml     # Docker multi-service setup
-├── requirements.txt       # Python dependencies
-└── manage.py              # Django management script
-
 ----------------------------
 🧪 Getting Started
 ----------------------------
@@ -48,7 +31,7 @@ Prerequisites:
 - Docker & Docker Compose
 
 Setup:
-$ git clone https://github.com/yourusername/english-vocab-tracker.git
+$ git clone https://github.com/MobinMg23/english-vocab-tracker.git
 $ cd english-vocab-tracker
 $ docker-compose up --build
 $ docker-compose exec web python manage.py migrate
@@ -85,7 +68,3 @@ This project is ready for production deployment using Docker. You may deploy it 
 ----------------------------
 Mobin Goodarzian – mobin.1383.goodarziyan@gmail.com
 
-----------------------------
-📃 License
-----------------------------
-This project is licensed under the MIT License.
